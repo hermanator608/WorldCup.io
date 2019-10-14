@@ -1,29 +1,30 @@
-// Learn more about this file at:
-// https://victorzhou.com/blog/build-an-io-game-part-1/#2-builds--project-setup
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    game: './src/client/index.js',
+    game: './src/client/index.ts',
   },
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
   },
+  // Enable sourcemaps for debugging webpack's output.
+  devtool: 'source-map',
+
+  resolve: {
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.tsx?$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ['@babel/preset-env'],
-          },
-        },
       },
+      { test: /\.js$/, loader: require('source-map-loader').loader },
       {
         test: /\.css$/,
         use: [
