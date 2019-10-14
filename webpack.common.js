@@ -3,27 +3,38 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CheckerPlugin } = require('awesome-typescript-loader');
+
 
 module.exports = {
   entry: {
-    game: './src/client/index.js',
+    game: './src/client/index.ts',
   },
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
   },
+  // Enable sourcemaps for debugging webpack's output.
+  devtool: 'source-map',
+
+  resolve: {
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+  },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ['@babel/preset-env'],
-          },
-        },
-      },
+      { test: /\.tsx?$/, loader: require('awesome-typescript-loader').loader, exclude: /node_modules/ },
+      { test: /\.js$/, loader: require('source-map-loader').loader },
+      // {
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   use: {
+      //     loader: 'babel-loader',
+      //     options: {
+      //       presets: ['@babel/preset-env'],
+      //     },
+      //   },
+      // },
       {
         test: /\.css$/,
         use: [
@@ -36,6 +47,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new CheckerPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
     }),

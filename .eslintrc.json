@@ -6,9 +6,7 @@
     "node": true,
     "es6": true
   },
-  "plugins": [
-    "import"
-  ],
+  "plugins": ["import"],
   "rules": {
     "arrow-parens": ["error", "as-needed"],
     "no-console": "off",
